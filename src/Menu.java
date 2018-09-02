@@ -9,7 +9,7 @@ public class Menu implements Renderable, Updatable {
 	protected List<MenuObject> objects;
 
 	public Menu(MenuObject... objects) {
-		this.objects = new ArrayList<MenuObject>(Arrays.asList(objects));
+		this.objects = new ArrayList<>(Arrays.asList(objects));
 	}
 
 	@Override

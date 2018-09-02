@@ -71,9 +71,9 @@ public class MenuSelect extends MenuObject {
 				skipSelected = false;
 				continue;
 			}
-			Color cStroke = selected == i ? Color.MAGENTA : Color.MAGENTA.darker();
+			Color cStroke = selected == i ? Color.MAGENTA : Color.MAGENTA.darker().darker();
 			if (!entries[i].enabled) {
-				cStroke = cStroke.darker();
+				cStroke = Util.transparentColor(Color.MAGENTA, 31);
 			}
 			Polygon p0, p1;
 			if (horizontal) {

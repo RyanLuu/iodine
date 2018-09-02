@@ -30,7 +30,7 @@ public class Map extends GameObject {
 		rune = new Rune(Main.WIDTH / 2, Main.HEIGHT / 8);
 		tiles = new Tile[HEIGHT_IN_TILES][WIDTH_IN_TILES];
 		try {
-			InputStream in = new FileInputStream(mapData);
+			InputStream in = new FileInputStream("assets/maps/" + mapData);
 			byte[] data = new byte[HEIGHT_IN_TILES * WIDTH_IN_TILES / 8 * 2];
 			in.read(data);
 			int x = 0;
@@ -70,7 +70,7 @@ public class Map extends GameObject {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		try (BufferedReader br = new BufferedReader(new FileReader("metadata.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("assets/metadata/stages.txt"))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.equals(mapData)) {

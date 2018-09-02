@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.function.Consumer;
 
-public class MenuSlider extends MenuObject {
+public class MenuVolumeSlider extends MenuObject {
 
 	private int sMin, sMax, sPos;
 	private float slider;
@@ -15,15 +15,9 @@ public class MenuSlider extends MenuObject {
 	private Consumer<Float> c;
 	private String text;
 
-	public MenuSlider(int x, int y, int width, int height, String text) {
+	public MenuVolumeSlider(int x, int y, int width, int height, String text) {
 		super(x, y, width, height);
-		c = new Consumer<Float>() {
-
-			@Override
-			public void accept(Float t) {
-				Sound.setVolume(t);
-			}
-		};
+		c = (Float t) -> Sound.setVolume(t);
 		sMax = x + width - height / 4;
 		sMin = x + height / 4;
 		sPos = (sMax + sMin) / 2;
@@ -40,9 +34,11 @@ public class MenuSlider extends MenuObject {
 		g.drawRect(x, y, width, height);
 		g.setColor(Color.BLACK);
 		g.fillRect(sliderRect.x, sliderRect.y, sliderRect.width, sliderRect.height);
+		g.setColor(Util.transparentColor(Color.MAGENTA, 63));
+		g.fillRect(sliderRect.x, sliderRect.y, sPos - sMin, sliderRect.height);
 		g.setColor(Color.MAGENTA);
 		g.drawRect(sliderRect.x, sliderRect.y, sPos - sMin, sliderRect.height);
-		
+
 		g.setFont(Resources.FONT.deriveFont(0.375f * Main.SCALE));
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 		int tx = sliderRect.x + (sliderRect.width - metrics.stringWidth(text)) / 2;

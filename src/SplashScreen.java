@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class SplashScreen implements Updatable, Renderable {
-	// not really a splash screen, but similar enough
+	// not really a splash screen, but close enough
 
 	private Map map;
 	private long birthday;
@@ -15,7 +15,8 @@ public class SplashScreen implements Updatable, Renderable {
 
 	@Override
 	public void render(Graphics g) {
-		int alpha = (int) ((float) (255 / 50) * Math.sqrt(-age + 2500));
+		int decayTime = 55;
+		int alpha = (int) ((float) (255 / decayTime) * Math.sqrt(-age + decayTime*decayTime));
 		if (alpha >= 0) {
 			Color c = new Color(255, 0, 255, alpha);
 			g.setColor(c);

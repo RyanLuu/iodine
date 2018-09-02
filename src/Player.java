@@ -36,7 +36,7 @@ public class Player extends GameObject {
 	private float meter;
 	private float endingLag;
 	private int score;
-	private Hurtbox hurtbox;
+	private Hitbox hitbox;
 	private boolean charging;
 	private float attackCharge;
 
@@ -44,7 +44,7 @@ public class Player extends GameObject {
 	private GradientPaint fill;
 
 	public Player(KeyConfig keys, Color color) {
-		hurtbox = new Hurtbox(this);
+		hitbox = new Hitbox(this);
 		prefs = new PlayerPrefs();
 		this.prefs.keys = keys;
 		this.prefs.color = color;
@@ -59,12 +59,11 @@ public class Player extends GameObject {
 		fill = new GradientPaint(x, y - height / 2, new Color(0, 0, 0, 0), x, y + height / 2, drawColor);
 		int rx = (int) x;
 		int ry = (int) y;
-		if (hurtbox.isActive()) {
-			hurtbox.updateLocation();
+		if (hitbox.render) {
 			g.setColor(Util.transparentColor(prefs.color, 191));
-			g.fillPolygon(hurtbox.getPoly());
-			g.setColor(Util.transparentColor(prefs.color, (int) (127 / Hurtbox.DURATION * hurtbox.life)));
-			Rectangle r = hurtbox.getAABB();
+			g.fillPolygon(hitbox.getPoly());
+			g.setColor(Util.transparentColor(prefs.color, 127 / Hitbox.DURATION * hitbox.life));
+			Rectangle r = hitbox.getAABB();
 			g.fillRect(r.x, r.y, r.width, r.height);
 		}
 		if (shielding) {
@@ -79,10 +78,8 @@ public class Player extends GameObject {
 		}
 
 		((Graphics2D) g).setPaint(fill);
-		// g.fillPolygon(p);
 		g.fillRect(rx - width / 2, ry - height / 2, width, height);
 		g.setColor(drawColor);
-		// g.drawPolygon(p);
 		g.drawRect(rx - width / 2, ry - height / 2, width, height);
 		g.fillRect(facingLeft ? rx - width / 2 : rx + width / 4, ry - height / 4, width / 4, height / 4);
 	}
@@ -101,10 +98,10 @@ public class Player extends GameObject {
 				if (p == this) {
 					continue;
 				}
-				if (p.hurtbox.power > 0 && p.hurtbox.intersects(aabb)) {
-					if (shielding && shieldDir.opposes(p.hurtbox.dir)) {
+				if (p.hitbox.power > 0 && p.hitbox.intersects(aabb)) {
+					if (shielding && shieldDir.opposes(p.hitbox.dir)) {
 						p.meter = 0;
-						p.hurtbox.power = 0;
+						p.hitbox.power = 0;
 						Sound.play(Resources.SHIELD);
 					} else {
 						kill();
@@ -186,6 +183,8 @@ public class Player extends GameObject {
 			}
 		}
 
+		// attacking
+
 		if (charging) {
 			meter -= 5;
 			attackCharge += .3;
@@ -213,7 +212,7 @@ public class Player extends GameObject {
 			}
 		}
 
-		hurtbox.update();
+		hitbox.update();
 
 		if (endingLag > 0) {
 			endingLag--;
@@ -252,22 +251,22 @@ public class Player extends GameObject {
 	private void attack(int range) {
 		int attackDir = (Keyboard.isDown(prefs.keys.up) ? -1 : 0) + (Keyboard.isDown(prefs.keys.down) ? 1 : 0);
 		if (attackDir == -1) {
-			hurtbox.setBounds(-width, -height - range, width * 2, height * 2 + range);
-			hurtbox.dir = Direction.UP;
+			hitbox.setBounds(-width, -height - range, width * 2, height * 2 + range);
+			hitbox.dir = Direction.UP;
 		} else if (attackDir == 1) {
-			hurtbox.setBounds(-width, -height, width * 2, height * 2 + range);
-			hurtbox.dir = Direction.DOWN;
+			hitbox.setBounds(-width, -height, width * 2, height * 2 + range);
+			hitbox.dir = Direction.DOWN;
 		} else {
 			if (facingLeft) {
-				hurtbox.setBounds(-width - range, -height, width * 2 + range, height * 2);
-				hurtbox.dir = Direction.LEFT;
+				hitbox.setBounds(-width - range, -height, width * 2 + range, height * 2);
+				hitbox.dir = Direction.LEFT;
 			} else {
-				hurtbox.setBounds(-width, -height, width * 2 + range, height * 2);
-				hurtbox.dir = Direction.RIGHT;
+				hitbox.setBounds(-width, -height, width * 2 + range, height * 2);
+				hitbox.dir = Direction.RIGHT;
 			}
 		}
-		hurtbox.power = range;
-		hurtbox.activate(Hurtbox.DURATION);
+		hitbox.power = range;
+		hitbox.activate(Hitbox.DURATION);
 		endingLag = 20;
 		Sound.play(Resources.ATTACK);
 	}
@@ -295,7 +294,7 @@ public class Player extends GameObject {
 		invincibility = 40;
 		meterRate = DEFAULT_METER_RATE;
 		attackCharge = 0;
-		hurtbox.life = 0;
+		hitbox.life = 0;
 		charging = false;
 	}
 

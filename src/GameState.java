@@ -46,6 +46,7 @@ public enum GameState {
 			MenuButton back = new MenuButton(Main.WIDTH / 32, Main.HEIGHT - Main.HEIGHT / 6, Main.WIDTH / 8,
 					Main.HEIGHT / 9, "Back", () -> Main.setGameState(MAIN_MENU));
 			om.add(back);
+			om.add(new MenuLabel(Main.WIDTH / 16, Main.HEIGHT * 4 / 18, Main.WIDTH * 3/8, Main.HEIGHT / 6, "Key Configuration"));
 			MenuKeyConfig mkc = new MenuKeyConfig(Main.WIDTH / 16, Main.HEIGHT * 7 / 18, Main.WIDTH * 3 / 8,
 					Main.HEIGHT * 7 / 18, p1);
 			MenuSelect playerSelect = new MenuSelect(Main.WIDTH / 16, Main.HEIGHT / 3, Main.WIDTH * 3 / 8,
@@ -55,7 +56,7 @@ public enum GameState {
 			playerSelect.disableEntry(2);
 			om.add(playerSelect);
 			om.add(mkc);
-			om.add(new MenuSelect(Main.WIDTH / 8, Main.HEIGHT / 9, Main.WIDTH / 4, Main.HEIGHT / 6,
+			om.add(new MenuSelect(Main.WIDTH / 8, Main.HEIGHT / 9, Main.WIDTH / 4, Main.HEIGHT * 5 / 36,
 					new String[] { "2 Players", "3 Players" }, new Runnable[] { () -> {
 						PLAY.variables.put("nPlayers", 2);
 						playerSelect.disableEntry(2);
@@ -66,7 +67,7 @@ public enum GameState {
 						PLAY.variables.put("nPlayers", 3);
 						playerSelect.enableEntry(2);
 					} }));
-			om.add(new MenuSlider(Main.WIDTH / 2, Main.HEIGHT / 6, Main.WIDTH * 3 / 8, Main.HEIGHT / 9, "Volume"));
+			om.add(new MenuVolumeSlider(Main.WIDTH / 2, Main.HEIGHT / 6, Main.WIDTH * 3 / 8, Main.HEIGHT / 9, "Volume"));
 			int[] sizes = { 960, 1024, 1280, 1600 };
 			MenuSelect resSelect = new MenuSelect(Main.WIDTH / 2, Main.HEIGHT * 7 / 18, Main.WIDTH * 3 / 8,
 					Main.HEIGHT / 3, new String[] { "960x540", "1024x576", "1280x720", "1600x900" },
@@ -102,7 +103,7 @@ public enum GameState {
 			Transition t = new Transition(50, () -> Main.setGameState(PLAY));
 			List<String> files = new ArrayList<String>();
 			List<String> names = new ArrayList<String>();
-			try (BufferedReader br = new BufferedReader(new FileReader("metadata.txt"))) {
+			try (BufferedReader br = new BufferedReader(new FileReader("assets/metadata/stages.txt"))) {
 				String line;
 				while ((line = br.readLine()) != null) {
 					if (line.trim().endsWith(".map")) {
@@ -127,26 +128,23 @@ public enum GameState {
 						load(PLAY);
 					});
 			playButton.setSound(Resources.PLAY_BUTTON_PRESS);
-			Updatable keyListener = new Updatable() {
-				@Override
-				public void update() {
-					if (Keyboard.isPressed(KeyEvent.VK_SPACE)) {
-						playButton.click();
-					}
-					if (Keyboard.isPressed(p1.getPrefs().keys.up)) {
-						mapSelect.selected--;
-						if (mapSelect.selected < 0) {
-							mapSelect.selected = mapSelect.getNumEntries() - 1;
-						}
-					}
-					if (Keyboard.isPressed(p1.getPrefs().keys.down)) {
-						mapSelect.selected++;
-						if (mapSelect.selected >= mapSelect.getNumEntries()) {
-							mapSelect.selected = 0;
-						}
-					}
-				}
-			};
+			Updatable keyListener = () -> {
+                if (Keyboard.isPressed(KeyEvent.VK_SPACE)) {
+                    playButton.click();
+                }
+                if (Keyboard.isPressed(p1.getPrefs().keys.up)) {
+                    mapSelect.selected--;
+                    if (mapSelect.selected < 0) {
+                        mapSelect.selected = mapSelect.getNumEntries() - 1;
+                    }
+                }
+                if (Keyboard.isPressed(p1.getPrefs().keys.down)) {
+                    mapSelect.selected++;
+                    if (mapSelect.selected >= mapSelect.getNumEntries()) {
+                        mapSelect.selected = 0;
+                    }
+                }
+            };
 			mm.add(playButton, mapSelect);
 			MAP_MENU.add(mm, t, keyListener);
 		} else if (state == PLAY) {
@@ -173,10 +171,10 @@ public enum GameState {
 		state.loaded = true;
 	}
 
-	private GameState() {
-		us = new ArrayList<Updatable>();
-		rs = new ArrayList<Renderable>();
-		variables = new HashMap<String, Object>();
+	GameState() {
+		us = new ArrayList<>();
+		rs = new ArrayList<>();
+		variables = new HashMap<>();
 		loaded = false;
 	}
 

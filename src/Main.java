@@ -11,7 +11,6 @@ public class Main {
 
 	private static Window window;
 	private static MainLoop loop;
-	private static GameState gs;
 
 	public Main() {
 		window = new Window(WIDTH, HEIGHT, "iodine");
@@ -30,27 +29,17 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new Main();
-			}
-		});
+		SwingUtilities.invokeLater(() -> new Main());
 	}
 
 	public static void setGameState(GameState gs) {
 		if (gs.isLoaded()) {
-			Main.gs = gs;
 			loop.setUpdatables(gs.toBeUpdated());
 			loop.setRenderables(gs.toBeRendered());
 			gs.init();
 		} else {
 			System.err.println("Tried to set unloaded game state! " + gs);
 		}
-	}
-
-	public static GameState getGameState() {
-		return Main.gs;
 	}
 
 	public static void quit() {

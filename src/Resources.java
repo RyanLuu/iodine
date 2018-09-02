@@ -36,7 +36,7 @@ public class Resources {
 	private static AudioInputStream loadAudio(String path) {
 		AudioInputStream ais = null;
 		try {
-			File file = new File(path);
+			File file = new File("assets/audio/" + path);
 			ais = AudioSystem.getAudioInputStream(file);
 			byte[] buffer = new byte[1024 * 32];
 			int read = 0;
@@ -63,7 +63,7 @@ public class Resources {
 
 	private static BufferedImage loadImage(String path) {
 		try {
-			return ImageIO.read(new File(path));
+			return ImageIO.read(new File("assets/images/" + path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,7 +72,7 @@ public class Resources {
 
 	private static Font loadFont(String path) {
 		try {
-			Font font = Font.createFont(Font.TRUETYPE_FONT, new File(path));
+			Font font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/" + path));
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(font);
 			return font;

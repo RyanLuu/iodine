@@ -1,7 +1,7 @@
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-public class Hurtbox implements Updatable {
+public class Hitbox implements Updatable {
 
 	public static final int DURATION = 7;
 
@@ -12,18 +12,24 @@ public class Hurtbox implements Updatable {
 	private Player owner;
 	private Rectangle aabb;
 	private Polygon poly;
+	public boolean render;
 
-	public Hurtbox(Player owner) {
+	public Hitbox(Player owner) {
 		this.life = 0;
 		this.owner = owner;
+		this.render = false;
 		aabb = new Rectangle();
 		poly = new Polygon();
 	}
 
 	public void update() {
 		if (isActive()) {
+			updateLocation();
 			life--;
-
+			render = true;
+		}
+		if (life  <= 0) {
+			render = false;
 		}
 	}
 
@@ -93,20 +99,11 @@ public class Hurtbox implements Updatable {
 		return aabb.intersects(r);
 	}
 
-	// public void render(Graphics g) {
-	// g.setColor(owner.getPrefs().color);
-	// g.drawRect(x, y, w, h);
-	// }
-
 	public void setBounds(int x, int y, int w, int h) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
-	}
-
-	public Player getOwner() {
-		return owner;
 	}
 
 	public boolean isActive() {
@@ -120,5 +117,4 @@ public class Hurtbox implements Updatable {
 	public Rectangle getAABB() {
 		return aabb;
 	}
-
 }

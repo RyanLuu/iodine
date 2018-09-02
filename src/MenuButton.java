@@ -28,10 +28,6 @@ public class MenuButton extends MenuObject {
 		this.sound = Resources.BUTTON_PRESS;
 	}
 
-	public MenuButton(int x, int y, int width, int height, String text) {
-		this(x, y, width, height, text, null);
-	}
-
 	@Override
 	public void update() {
 		hover = contains(Mouse.getX(), Mouse.getY());
@@ -44,7 +40,7 @@ public class MenuButton extends MenuObject {
 	@Override
 	public void render(Graphics g) {
 		Color cStroke = Color.MAGENTA.darker();
-		cStroke = hover ? click ? cStroke.darker() : cStroke.brighter() : cStroke;
+		cStroke = hover ? click ? cStroke.darker().darker() : cStroke.brighter() : cStroke.darker();
 		GradientPaint cFill = new GradientPaint(0, y, new Color(0, 0, 0, 0), 0, y + height, cStroke);
 		((Graphics2D) g).setPaint(cFill);
 		g.fillPolygon(p0);
@@ -61,10 +57,6 @@ public class MenuButton extends MenuObject {
 
 	public boolean contains(int x, int y) {
 		return p0.contains(x, y) || p1.contains(x, y);
-	}
-
-	public AudioInputStream getSound() {
-		return sound;
 	}
 
 	public void setSound(AudioInputStream stream) {

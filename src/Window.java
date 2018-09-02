@@ -23,12 +23,7 @@ public class Window extends JFrame {
 	}
 
 	public void render() {
-		SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                canvas.repaint();
-            }
-        });
+		SwingUtilities.invokeLater(()-> canvas.repaint());
 	}
 
 	public DrawingCanvas getCanvas() {
