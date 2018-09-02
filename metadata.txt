@@ -1,0 +1,35 @@
+a.map
+Hyrule Castle
+Super Smash Bros.
+0x7F7F7F
+0x3F3F3F
+
+b.map
+Level 1-1
+Super Mario Bros.
+0xE85A10
+0xBDFF19
+
+c.map
+Stage 1: Jungle
+Contra
+0x579F04
+0x898106
+
+d.map
+Stranded Ship
+Shovel Knight
+0x5B3D07
+0x9bEFFF
+
+e.map
+Cut Man Stage
+Mega Man
+0x70E090
+0xBCBCBC
+
+f.map
+Final Destination
+Super Smash Bros. Melee
+0x483845
+0xFFFFFF
