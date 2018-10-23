@@ -3,7 +3,13 @@ Ryan Luu's final project for AP Computer Science.
 
 ## How to Play
 
-An executable .jar file is included in the repository. Make sure you have [Java](https://www.java.com/en/download/) installed, then clone the repository and run iodine.jar. Game controls can be found in the **options** menu.
+An executable .jar file is included in the repository. Make sure you have [Java](https://www.java.com/en/download/) installed, then clone the repository and run iodine.jar.
+
+```
+java -jar iodine.jar
+```
+
+Game controls can be found in the **options** menu.
 
 ## License
 
