@@ -11,6 +11,8 @@ An executable .jar file is included in the repository. Make sure you have [Java]
 java -jar iodine.jar
 ```
 
+**iodine** is a fast-paced, two/three player, one-hit KO platform fighter. Even without combos or fancy moves, the game's tight controls and dynamic mechanics give a few simple controls a wealth of depth. Most importantly, iodine is fun and makes for a great excuse for me to play a fun video game in class.
+
 Game controls can be found in the **options** menu.
 
 ## License
