@@ -1,5 +1,7 @@
 # iodine
-Ryan Luu's final project for AP Computer Science.
+My final project for AP Computer Science, written in Java.
+
+![Screenshot](/screenshot.png)
 
 ## How to Play
 
